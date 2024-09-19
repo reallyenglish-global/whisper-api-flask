@@ -3,13 +3,15 @@ from flask_cors import CORS
 from tempfile import NamedTemporaryFile
 import whisper
 import torch
+import os
 
 # Check if NVIDIA GPU is available
 torch.cuda.is_available()
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 # Load the Whisper model:
-model = whisper.load_model("base", device=DEVICE)
+model_name = os.environ['MODEL'] or "base"
+model = whisper.load_model(model_name, device=DEVICE)
 
 app = Flask(__name__)
 CORS(app)
